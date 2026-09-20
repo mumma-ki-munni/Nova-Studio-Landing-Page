@@ -1,1 +1,1741 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova Studio — Digital Product Agency & Next-Gen SaaS Engine</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+              950: '#1e1b4b',
+            },
+            accent: {
+              fuchsia: '#d946ef',
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+            }
+          },
+          animation: {
+            'marquee': 'marquee 25s linear infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-50%)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.8);
+    }
+
+    /* Glassmorphism helpers */
+    .glass-nav {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .glass-card {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Gradient Background Glows */
+    .hero-glow {
+      background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.22) 0%, rgba(217, 70, 239, 0.12) 35%, rgba(6, 182, 212, 0) 70%);
+    }
+
+    /* Smooth Height Transition for FAQ Accordion */
+    .faq-answer {
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-[#090d16] dark:text-slate-100 font-sans transition-colors duration-300 antialiased selection:bg-brand-500 selection:text-white min-h-screen flex flex-col relative overflow-x-hidden">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+  <header class="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-[#090d16]/70 glass-nav transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-xl p-1">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-accent-fuchsia to-brand-400 flex items-center justify-center shadow-lg shadow-brand-500/25 group-hover:scale-105 transition-transform duration-300">
+            <i class="fa-solid fa-bolt text-white text-lg"></i>
+          </div>
+          <span class="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-slate-900 via-brand-600 to-accent-fuchsia dark:from-white dark:via-brand-300 dark:to-accent-fuchsia bg-clip-text text-transparent">
+            Nova<span class="text-brand-500">.</span>
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+          <a href="#features" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Features</a>
+          <a href="#portfolio" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Portfolio</a>
+          <a href="#pricing" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Pricing & ROI</a>
+          <a href="#testimonials" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Testimonials</a>
+          <a href="#faq" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">FAQ</a>
+        </nav>
+
+        <!-- Right Side Nav Actions -->
+        <div class="hidden md:flex items-center gap-4">
+          <!-- Dark/Light Theme Toggle -->
+          <button id="theme-toggle" aria-label="Toggle Theme" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/80 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:border-brand-300 dark:hover:border-brand-700 transition-all duration-200">
+            <i class="fa-solid fa-moon dark:hidden text-base"></i>
+            <i class="fa-solid fa-sun hidden dark:inline text-base text-amber-400"></i>
+          </button>
+
+          <!-- Book Call CTA -->
+          <button onclick="openModal('contact-modal')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+            <span>Book a Call</span>
+            <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3 md:hidden">
+          <button id="theme-toggle-mobile" aria-label="Toggle Theme" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300">
+            <i class="fa-solid fa-moon dark:hidden text-sm"></i>
+            <i class="fa-solid fa-sun hidden dark:inline text-sm text-amber-400"></i>
+          </button>
+          
+          <button id="mobile-menu-btn" aria-label="Open Menu" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-bars-staggered text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md hidden transition-opacity duration-300">
+      <div id="drawer-panel" class="fixed right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white dark:bg-slate-950 p-6 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out border-l border-slate-200 dark:border-slate-800">
+        <div>
+          <div class="flex items-center justify-between pb-6 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-accent-fuchsia flex items-center justify-center text-white">
+                <i class="fa-solid fa-bolt text-sm"></i>
+              </div>
+              <span class="font-bold text-xl text-slate-900 dark:text-white">Nova<span class="text-brand-500">.</span></span>
+            </div>
+            <button id="close-drawer-btn" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+              <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+          </div>
+          
+          <nav class="flex flex-col gap-4 mt-6 text-base font-medium text-slate-700 dark:text-slate-200">
+            <a href="#features" class="mobile-nav-link p-2 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 transition">Features</a>
+            <a href="#portfolio" class="mobile-nav-link p-2 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 transition">Portfolio</a>
+            <a href="#pricing" class="mobile-nav-link p-2 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 transition">Pricing & ROI</a>
+            <a href="#testimonials" class="mobile-nav-link p-2 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 transition">Testimonials</a>
+            <a href="#faq" class="mobile-nav-link p-2 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 transition">FAQ</a>
+          </nav>
+        </div>
+
+        <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
+          <button onclick="openModal('contact-modal'); closeDrawer();" class="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 to-indigo-600 text-center shadow-lg shadow-brand-500/20">
+            Book a Strategy Call
+          </button>
+          <div class="text-center text-xs text-slate-400">
+            Average response time: &lt; 2 hours
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden hero-glow">
+      <!-- Background Subtle Mesh Elements -->
+      <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-b from-brand-500/20 via-accent-fuchsia/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+          
+          <!-- Announcement Pill Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-500/30 bg-brand-50/80 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300 text-xs sm:text-sm font-semibold mb-6 backdrop-blur-md shadow-sm animate-pulse-slow">
+            <span class="flex h-2 w-2 rounded-full bg-brand-500"></span>
+            <span>🚀 Introducing Nova Engine 3.0</span>
+            <span class="text-slate-400 dark:text-slate-500">|</span>
+            <span class="hover:underline cursor-pointer font-medium" onclick="scrollToSection('features')">Explore updates &rarr;</span>
+          </div>
+
+          <!-- Hero Main Headline -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] mb-6 text-slate-900 dark:text-white">
+            Transforming Complex Ideas Into 
+            <span class="bg-gradient-to-r from-brand-600 via-accent-fuchsia to-accent-cyan bg-clip-text text-transparent">
+              High-Converting SaaS Products
+            </span>
+          </h1>
+
+          <!-- Hero Subtitle -->
+          <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+            We partner with ambitious startups and enterprises to build hyper-scalable web architectures, AI-driven workflows, and delightful user experiences.
+          </p>
+
+          <!-- CTA Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+            <button onclick="openModal('contact-modal')" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-bold text-white bg-gradient-to-r from-brand-600 via-indigo-600 to-accent-fuchsia hover:shadow-xl hover:shadow-brand-500/25 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2">
+              <span>Start Your Project Free</span>
+              <i class="fa-solid fa-sparkles text-sm"></i>
+            </button>
+            <a href="#interactive-preview" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold text-slate-700 dark:text-slate-200 bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-brand-400 dark:hover:border-brand-600 hover:bg-slate-100 dark:hover:bg-slate-800/90 transition-all duration-200 flex items-center justify-center gap-2.5">
+              <i class="fa-solid fa-play text-brand-500 text-xs"></i>
+              <span>Live Engine Preview</span>
+            </a>
+          </div>
+
+          <!-- Social Proof Counter Badges -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-2xl bg-white/50 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800/80 glass-card">
+            <div class="text-center p-2">
+              <div class="text-2xl lg:text-3xl font-extrabold text-brand-600 dark:text-brand-400">99.98%</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Uptime Reliability</div>
+            </div>
+            <div class="text-center p-2">
+              <div class="text-2xl lg:text-3xl font-extrabold text-accent-fuchsia">120+</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Products Launched</div>
+            </div>
+            <div class="text-center p-2">
+              <div class="text-2xl lg:text-3xl font-extrabold text-accent-cyan">4.9 / 5.0</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Client Satisfaction</div>
+            </div>
+            <div class="text-center p-2">
+              <div class="text-2xl lg:text-3xl font-extrabold text-emerald-500">$350M+</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Client Revenue Generated</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="interactive-preview" class="mt-16 max-w-5xl mx-auto rounded-3xl p-2 sm:p-3 bg-gradient-to-b from-brand-500/20 via-slate-300/30 dark:via-slate-700/30 to-transparent shadow-2xl">
+          <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-inner">
+            
+            <!-- Window Bar -->
+            <div class="px-5 py-3.5 bg-slate-100/90 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                <span class="ml-2 text-xs font-mono text-slate-500 dark:text-slate-400 hidden sm:inline">nova-control-center-v3.0.production.app</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Live Telemetry
+                </span>
+              </div>
+            </div>
+
+            <!-- Dashboard Interactive Body -->
+            <div class="p-6 lg:p-8">
+              <!-- Metric Switcher Tabs -->
+              <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900 dark:text-white">Real-Time Performance Matrix</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Click any tab below to switch telemetry vectors dynamically.</p>
+                </div>
+                
+                <div class="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                  <button onclick="setDashboardMetric('mrr')" id="tab-mrr" class="dash-tab px-3.5 py-1.5 text-xs font-bold rounded-lg bg-white dark:bg-slate-950 text-brand-600 dark:text-brand-400 shadow-sm transition-all">
+                    MRR Growth
+                  </button>
+                  <button onclick="setDashboardMetric('users')" id="tab-users" class="dash-tab px-3.5 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg transition-all">
+                    Active Users
+                  </button>
+                  <button onclick="setDashboardMetric('velocity')" id="tab-velocity" class="dash-tab px-3.5 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg transition-all">
+                    Engine Velocity
+                  </button>
+                </div>
+              </div>
+
+              <!-- Metrics Summary Cards -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                  <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" id="metric-title">Monthly Recurring Revenue</span>
+                  <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white" id="metric-main-value">$184,240</span>
+                    <span class="text-xs font-bold text-emerald-500 flex items-center gap-0.5" id="metric-delta">
+                      <i class="fa-solid fa-arrow-trend-up"></i> +28.4%
+                    </span>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                  <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Average API Latency</span>
+                  <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white">18.4 ms</span>
+                    <span class="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
+                      <i class="fa-solid fa-bolt"></i> Ultra Fast
+                    </span>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                  <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Conversion Efficiency</span>
+                  <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white">6.82%</span>
+                    <span class="text-xs font-bold text-brand-500 flex items-center gap-0.5">
+                      <i class="fa-solid fa-circle-check"></i> Benchmark +3.1%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative w-full h-56 bg-slate-50/50 dark:bg-slate-950/50 rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col justify-between">
+                <div class="flex justify-between items-center text-xs text-slate-400">
+                  <span>Simulated Trend (Last 7 Months)</span>
+                  <span id="chart-legend" class="font-semibold text-brand-500">● Revenue Projection</span>
+                </div>
+                
+                <!-- Dynamic SVG Chart -->
+                <div class="w-full h-36 relative">
+                  <svg id="dashboard-svg-chart" viewBox="0 0 500 120" preserveAspectRatio="none" class="w-full h-full overflow-visible transition-all duration-500">
+                    <defs>
+                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.35" />
+                        <stop offset="100%" stop-color="#6366f1" stop-opacity="0.0" />
+                      </linearGradient>
+                    </defs>
+                    <path id="chart-area" d="M 0,100 L 0,80 Q 75,65 150,70 T 300,35 T 450,20 L 500,10 L 500,120 L 0,120 Z" fill="url(#chartGradient)" />
+                    <path id="chart-line" d="M 0,80 Q 75,65 150,70 T 300,35 T 450,20 L 500,10" fill="none" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round" />
+                    <!-- Chart Points -->
+                    <circle id="cp-1" cx="0" cy="80" r="4" class="fill-white stroke-brand-600 stroke-[3px]" />
+                    <circle id="cp-2" cx="150" cy="70" r="4" class="fill-white stroke-brand-600 stroke-[3px]" />
+                    <circle id="cp-3" cx="300" cy="35" r="4" class="fill-white stroke-brand-600 stroke-[3px]" />
+                    <circle id="cp-4" cx="500" cy="10" r="4" class="fill-white stroke-brand-600 stroke-[3px]" />
+                  </svg>
+                </div>
+
+                <div class="flex justify-between text-[11px] font-mono text-slate-400 pt-2 border-t border-slate-200/60 dark:border-slate-800">
+                  <span>OCT</span>
+                  <span>NOV</span>
+                  <span>DEC</span>
+                  <span>JAN</span>
+                  <span>FEB</span>
+                  <span>MAR</span>
+                  <span class="font-bold text-brand-600 dark:text-brand-400">APR (PROJ)</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="py-10 border-y border-slate-200/80 dark:border-slate-800/80 bg-white/40 dark:bg-slate-900/30 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 mb-4 text-center">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+          Trusted by Engineering & Product Teams at Forward-Thinking Companies
+        </p>
+      </div>
+
+      <!-- Infinite Marquee Ticker -->
+      <div class="relative w-full overflow-hidden flex items-center">
+        <div class="flex gap-12 whitespace-nowrap animate-marquee py-2">
+          <!-- Marquee Item Set 1 -->
+          <div class="flex items-center gap-12 text-slate-400 dark:text-slate-500 text-xl font-extrabold tracking-tight">
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-stripe text-2xl"></i> STRIPEWAY</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-aws text-2xl"></i> CLOUDPULSE</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-github text-2xl"></i> HYPERGIT</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-docker text-2xl"></i> DOCKERLINK</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-figma text-2xl"></i> FIGMASYNC</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-slack text-2xl"></i> SLACKFLOW</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-solid fa-cube text-2xl"></i> QUANTUMX</span>
+          </div>
+
+          <!-- Duplicate for Seamless Infinite Loop -->
+          <div class="flex items-center gap-12 text-slate-400 dark:text-slate-500 text-xl font-extrabold tracking-tight">
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-stripe text-2xl"></i> STRIPEWAY</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-aws text-2xl"></i> CLOUDPULSE</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-github text-2xl"></i> HYPERGIT</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-docker text-2xl"></i> DOCKERLINK</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-figma text-2xl"></i> FIGMASYNC</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-brands fa-slack text-2xl"></i> SLACKFLOW</span>
+            <span class="flex items-center gap-2 hover:text-brand-500 transition-colors cursor-default"><i class="fa-solid fa-cube text-2xl"></i> QUANTUMX</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-500/10 px-3.5 py-1 rounded-full border border-brand-500/20">Capabilities</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-4 mb-4 tracking-tight">
+            Engineered for Precision, Scaled for Growth
+          </h2>
+          <p class="text-base text-slate-600 dark:text-slate-400">
+            Every feature is tailor-made to unlock speed, eliminate technical bottlenecks, and turn users into dedicated advocates.
+          </p>
+        </div>
+
+        <!-- 6 Feature Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- Card 1 -->
+          <div class="p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 transition-all duration-300 hover:shadow-xl hover:shadow-brand-500/10 hover:-translate-y-1.5 group flex flex-col justify-between">
+            <div>
+              <div class="w-14 h-14 rounded-xl bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-mono uppercase font-bold text-brand-600 dark:text-brand-400">Architecture</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Next-Gen Cloud Architecture</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Zero-cold-start microservices, edge computing replication, and autonomous database sharding capable of millions of queries.
+              </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">Latency &lt; 20ms</span>
+              <button onclick="previewFeature('Next-Gen Cloud Architecture', 'Our cloud architecture leverages edge worker runtimes, distributed caching layers, and geo-replicated serverless databases to provide lightning responses anywhere on the globe.')" class="font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                Explore Tech &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-accent-fuchsia dark:hover:border-accent-fuchsia transition-all duration-300 hover:shadow-xl hover:shadow-accent-fuchsia/10 hover:-translate-y-1.5 group flex flex-col justify-between">
+            <div>
+              <div class="w-14 h-14 rounded-xl bg-accent-fuchsia/10 dark:bg-accent-fuchsia/20 text-accent-fuchsia flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-mono uppercase font-bold text-accent-fuchsia">Intelligence</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Autonomous AI Workflows</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Deep LLM orchestration with fine-tuned embeddings, retrieval-augmented generation (RAG), and agentic task execution pipelines.
+              </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">99.4% Task Accuracy</span>
+              <button onclick="previewFeature('Autonomous AI Workflows', 'We integrate production-grade agentic frameworks that ingest unstructured documents, execute multi-step analysis, and auto-generate clean structured insights.')" class="font-bold text-accent-fuchsia hover:underline">
+                Explore Tech &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-accent-cyan dark:hover:border-accent-cyan transition-all duration-300 hover:shadow-xl hover:shadow-accent-cyan/10 hover:-translate-y-1.5 group flex flex-col justify-between">
+            <div>
+              <div class="w-14 h-14 rounded-xl bg-accent-cyan/10 dark:bg-accent-cyan/20 text-accent-cyan flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-palette"></i>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-mono uppercase font-bold text-accent-cyan">Design System</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Ultra-High Fidelity UI/UX</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Design systems that balance emotional delight with razor-sharp conversion metrics. Full Figma tokens synchronized with code.
+              </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">Figma Tokens Ready</span>
+              <button onclick="previewFeature('Ultra-High Fidelity UI/UX', 'Complete accessibility compliance (WCAG AAA), dynamic theming, smooth physics-based micro-interactions, and instant component storybooks for developers.')" class="font-bold text-accent-cyan hover:underline">
+                Explore Tech &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 group flex flex-col justify-between">
+            <div>
+              <div class="w-14 h-14 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-mono uppercase font-bold text-emerald-500">Security</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Bank-Grade Compliance</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                SOC-2, HIPAA, and GDPR audited blueprint configurations with hardware-encrypted keys, role-based RBAC, and telemetry auditing.
+              </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">SOC2 Type II Ready</span>
+              <button onclick="previewFeature('Bank-Grade Compliance', 'Every database field is protected by client-side envelope encryption, real-time threat detection, and comprehensive audit trails for peace of mind.')" class="font-bold text-emerald-500 hover:underline">
+                Explore Tech &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10 hover:-translate-y-1.5 group flex flex-col justify-between">
+            <div>
+              <div class="w-14 h-14 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-gauge-high"></i>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-mono uppercase font-bold text-amber-500">Speed</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Realtime Synchronization</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Bi-directional WebSocket streaming with CRDT conflict-free resolution for multiplayer SaaS collaboration (like Figma or Notion).
+              </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">Multiplayer CRDTs</span>
+              <button onclick="previewFeature('Realtime Synchronization', 'State synchronization built with Conflict-Free Replicated Data Types, sub-5ms socket multiplexing, and automatic offline recovery syncing.')" class="font-bold text-amber-500 hover:underline">
+                Explore Tech &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-brand-600 dark:hover:border-brand-400 transition-all duration-300 hover:shadow-xl hover:shadow-brand-500/10 hover:-translate-y-1.5 group flex flex-col justify-between">
+            <div>
+              <div class="w-14 h-14 rounded-xl bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-mono uppercase font-bold text-brand-600 dark:text-brand-400">Growth</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Growth Funnel Instrumentation</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Built-in event streaming pipelines, feature flagging experiments, and automated A/B conversion engine to maximize Customer LTV.
+              </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">A/B Testing Engine</span>
+              <button onclick="previewFeature('Growth Funnel Instrumentation', 'Track cohort conversions with privacy-preserving server-side telemetry, automatic cohort split-testing, and dynamic checkout optimization.')" class="font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                Explore Tech &rarr;
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="py-24 bg-slate-100/60 dark:bg-slate-950/40 border-y border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div>
+            <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-500/10 px-3.5 py-1 rounded-full border border-brand-500/20">Selected Works</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight">
+              Products Shaping Tomorrow's Markets
+            </h2>
+          </div>
+
+          <!-- Category Filters -->
+          <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="portfolio-filters">
+            <button onclick="filterPortfolio('all')" class="portfolio-filter-btn active-filter px-4 py-2 text-xs font-bold rounded-xl bg-brand-600 text-white shadow-sm transition-all">All Projects</button>
+            <button onclick="filterPortfolio('webapps')" class="portfolio-filter-btn px-4 py-2 text-xs font-medium rounded-xl bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-brand-400 transition-all">Web Apps</button>
+            <button onclick="filterPortfolio('aiml')" class="portfolio-filter-btn px-4 py-2 text-xs font-medium rounded-xl bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-brand-400 transition-all">AI & ML</button>
+            <button onclick="filterPortfolio('branding')" class="portfolio-filter-btn px-4 py-2 text-xs font-medium rounded-xl bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-brand-400 transition-all">Branding</button>
+            <button onclick="filterPortfolio('mobile')" class="portfolio-filter-btn px-4 py-2 text-xs font-medium rounded-xl bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-brand-400 transition-all">Mobile</button>
+          </div>
+        </div>
+
+        <!-- Portfolio Items Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+          
+          <!-- Item 1: Web App -->
+          <div class="portfolio-item group rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col" data-category="webapps">
+            <div class="relative h-56 bg-gradient-to-tr from-indigo-900 via-brand-800 to-indigo-700 overflow-hidden flex items-center justify-center p-6">
+              <!-- Visual Mockup Graphic -->
+              <div class="w-full h-full rounded-xl bg-slate-900/80 p-4 border border-white/10 shadow-2xl flex flex-col justify-between group-hover:scale-105 transition-transform duration-500">
+                <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span class="text-xs font-mono text-brand-300">Vortex Analytics v2.1</span>
+                  <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono">+340% MRR</span>
+                </div>
+                <div class="flex items-end gap-2 h-16 pt-2">
+                  <div class="w-1/6 bg-indigo-500/40 rounded-t h-40%"></div>
+                  <div class="w-1/6 bg-indigo-500/60 rounded-t h-60%"></div>
+                  <div class="w-1/6 bg-indigo-500/50 rounded-t h-50%"></div>
+                  <div class="w-1/6 bg-brand-400 rounded-t h-85%"></div>
+                  <div class="w-1/6 bg-accent-cyan rounded-t h-70%"></div>
+                  <div class="w-1/6 bg-accent-fuchsia rounded-t h-100%"></div>
+                </div>
+              </div>
+              <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Web Apps</span>
+            </div>
+            
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                  Vortex Analytics Platform
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                  Real-time churn prevention and user telemetry dashboard processing over 50M daily events with sub-second query speeds.
+                </p>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">React • Rust • ClickHouse</span>
+                <button onclick="showProjectDetails('Vortex Analytics Platform', 'Web Apps', 'Processed 50M+ daily events with sub-100ms aggregation. Replaced traditional legacy warehouse with a unified columnar telemetry stream, lowering client compute bill by 64%.', 'React 18, WebSockets, ClickHouse, Go, TailwindCSS', 'https://placehold.co/800x450/1e1b4b/818cf8?text=Vortex+Analytics+Architecture')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                  Case Study &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: AI & ML -->
+          <div class="portfolio-item group rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col" data-category="aiml">
+            <div class="relative h-56 bg-gradient-to-tr from-purple-950 via-fuchsia-900 to-indigo-900 overflow-hidden flex items-center justify-center p-6">
+              <div class="w-full h-full rounded-xl bg-slate-950/80 p-4 border border-white/10 shadow-2xl flex flex-col justify-center items-center text-center group-hover:scale-105 transition-transform duration-500">
+                <div class="w-12 h-12 rounded-full bg-accent-fuchsia/20 text-accent-fuchsia flex items-center justify-center text-xl mb-2">
+                  <i class="fa-solid fa-brain"></i>
+                </div>
+                <span class="text-xs font-mono text-fuchsia-300">Cognitive Engine 4.5</span>
+                <span class="text-[10px] text-slate-400 mt-1">Autonomous Vector Indexing</span>
+              </div>
+              <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">AI & ML</span>
+            </div>
+            
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-accent-fuchsia transition-colors">
+                  Aura Cognitive AI Copilot
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                  Multi-agent conversational knowledge retrieval system deployed for Fortune 500 legal and compliance audits.
+                </p>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">Python • LangChain • Pinecone</span>
+                <button onclick="showProjectDetails('Aura Cognitive AI Copilot', 'AI & ML', 'Cut document audit cycle time from 14 days to under 4 minutes with hallucination rate under 0.02% verified by independent legal counsels.', 'Python, FastAPI, LangChain, Pinecone Vector DB, Next.js', 'https://placehold.co/800x450/3b0764/d946ef?text=Aura+AI+System')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                  Case Study &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: Mobile -->
+          <div class="portfolio-item group rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col" data-category="mobile">
+            <div class="relative h-56 bg-gradient-to-tr from-cyan-950 via-teal-900 to-slate-900 overflow-hidden flex items-center justify-center p-6">
+              <div class="w-36 h-full rounded-2xl bg-slate-950 p-3 border-2 border-white/20 shadow-2xl flex flex-col justify-between group-hover:scale-105 transition-transform duration-500">
+                <div class="w-12 h-1 bg-white/30 rounded-full mx-auto"></div>
+                <div class="text-center">
+                  <i class="fa-solid fa-wallet text-accent-cyan text-xl mb-1"></i>
+                  <div class="text-[10px] font-mono text-white">$42,910.00</div>
+                </div>
+                <div class="w-full bg-accent-cyan/20 text-accent-cyan text-[9px] py-1 rounded text-center font-bold">Instant Transfer</div>
+              </div>
+              <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Mobile</span>
+            </div>
+            
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-accent-cyan transition-colors">
+                  Pulse Neobank Mobile Experience
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                  Cross-platform iOS and Android financial companion with biometrics, sub-account budgeting, and instant physical card lock.
+                </p>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">React Native • Swift • Kotlin</span>
+                <button onclick="showProjectDetails('Pulse Neobank Mobile Experience', 'Mobile', 'Attracted 450,000 active mobile app users within 6 months of App Store launch, maintaining a 4.9-star average across 12,000+ reviews.', 'React Native, TypeScript, Node.js Microservices, Plaid API', 'https://placehold.co/800x450/083344/06b6d4?text=Pulse+Neobank+App')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                  Case Study &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: Branding -->
+          <div class="portfolio-item group rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col" data-category="branding">
+            <div class="relative h-56 bg-gradient-to-tr from-amber-950 via-stone-900 to-amber-900 overflow-hidden flex items-center justify-center p-6">
+              <div class="w-full h-full rounded-xl bg-stone-950/90 p-5 border border-white/10 shadow-2xl flex flex-col items-center justify-center text-center group-hover:scale-105 transition-transform duration-500">
+                <span class="font-serif text-3xl font-light text-amber-200 tracking-widest">É L É V E</span>
+                <span class="text-[10px] tracking-widest uppercase text-stone-400 mt-2 font-mono">Modern Luxury Identity System</span>
+              </div>
+              <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Branding</span>
+            </div>
+            
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-amber-500 transition-colors">
+                  Élève Haute Couture Identity
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                  Complete global brand architecture, digital lookbook, typographic identity, and 3D product rendering for Parisian atelier.
+                </p>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">Design System • 3D Motion</span>
+                <button onclick="showProjectDetails('Élève Haute Couture Identity', 'Branding', 'Elevated conversion rate by 185% after complete visual rebranding and 3D web showcase rollout across EU and Asian luxury markets.', 'Figma, Blender 3D, Custom WebGL, Shopify Plus Custom Engine', 'https://placehold.co/800x450/292524/f59e0b?text=Eleve+Brand+System')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                  Case Study &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5: Web Apps -->
+          <div class="portfolio-item group rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col" data-category="webapps">
+            <div class="relative h-56 bg-gradient-to-tr from-emerald-950 via-teal-900 to-slate-900 overflow-hidden flex items-center justify-center p-6">
+              <div class="w-full h-full rounded-xl bg-slate-950/80 p-4 border border-white/10 shadow-2xl flex flex-col justify-between group-hover:scale-105 transition-transform duration-500">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono text-emerald-400">SyncGrid Collaborative</span>
+                  <i class="fa-solid fa-circle-nodes text-emerald-400"></i>
+                </div>
+                <div class="grid grid-cols-4 gap-1.5 py-2">
+                  <div class="h-6 bg-emerald-500/20 rounded border border-emerald-500/30"></div>
+                  <div class="h-6 bg-emerald-500/40 rounded border border-emerald-500/50"></div>
+                  <div class="h-6 bg-emerald-500/20 rounded border border-emerald-500/30"></div>
+                  <div class="h-6 bg-emerald-500/30 rounded border border-emerald-500/40"></div>
+                </div>
+                <span class="text-[10px] font-mono text-slate-400">Latency: 1.2ms (Zero Drift)</span>
+              </div>
+              <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Web Apps</span>
+            </div>
+            
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors">
+                  SyncGrid Collaborative Canvas
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                  Interactive multi-user whiteboard supporting 100+ concurrent editors per room with instantaneous conflict-free sync.
+                </p>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">WebAssembly • WebRTC • Yjs</span>
+                <button onclick="showProjectDetails('SyncGrid Collaborative Canvas', 'Web Apps', 'Powers team collaboration for over 80,000 product designers and software architects globally with rock-solid reliability.', 'Wasm, C++, WebRTC, Canvas API, TailwindCSS', 'https://placehold.co/800x450/064e3b/10b981?text=SyncGrid+Canvas')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                  Case Study &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6: AI & ML -->
+          <div class="portfolio-item group rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col" data-category="aiml">
+            <div class="relative h-56 bg-gradient-to-tr from-slate-900 via-indigo-950 to-blue-900 overflow-hidden flex items-center justify-center p-6">
+              <div class="w-full h-full rounded-xl bg-slate-900/80 p-4 border border-white/10 shadow-2xl flex flex-col justify-center items-center group-hover:scale-105 transition-transform duration-500">
+                <i class="fa-solid fa-wave-square text-3xl text-brand-400 mb-2"></i>
+                <span class="text-xs font-mono text-white">NeuroVoice Synthesizer</span>
+                <span class="text-[10px] text-indigo-300 font-mono">Lossless Audio Latency</span>
+              </div>
+              <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">AI & ML</span>
+            </div>
+            
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-brand-400 transition-colors">
+                  NeuroVoice Speech Synthesizer
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                  Sub-50ms ultra-realistic text-to-speech API with emotional modulation and custom voice cloning capabilities.
+                </p>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">PyTorch • CUDA • WebAudio</span>
+                <button onclick="showProjectDetails('NeuroVoice Speech Synthesizer', 'AI & ML', 'Deployed across video games, automated support agents, and voice dubbing studios handling 1.2M minutes of audio daily.', 'PyTorch, TensorRT, CUDA kernels, WebAudio API, Node.js', 'https://placehold.co/800x450/1e1b4b/6366f1?text=NeuroVoice+Synthesizer')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                  Case Study &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-500/10 px-3.5 py-1 rounded-full border border-brand-500/20">Transparent Investment</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-4 mb-4 tracking-tight">
+            Predictable Pricing Built for High Scale
+          </h2>
+          <p class="text-base text-slate-600 dark:text-slate-400">
+            No surprise overages. Choose the plan that aligns with your product stage, or customize for enterprise velocity.
+          </p>
+
+          <!-- Billing Period Toggle Switch -->
+          <div class="inline-flex items-center gap-3 p-1.5 mt-8 rounded-2xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700">
+            <button id="billing-monthly" onclick="setBillingCycle('monthly')" class="px-5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-950 text-slate-900 dark:text-white shadow-sm transition-all">
+              Monthly
+            </button>
+            <button id="billing-annual" onclick="setBillingCycle('annual')" class="px-5 py-2 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-1.5">
+              <span>Annual</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-white animate-pulse">Save 20%</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Tier Pricing Cards Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-24">
+          
+          <!-- Starter Tier -->
+          <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+            <div>
+              <div class="text-xs font-mono uppercase font-bold text-slate-500 dark:text-slate-400 mb-2">Seed & Startups</div>
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Starter Launch</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Essential foundation to launch your MVP into market with confidence.</p>
+              
+              <div class="flex items-baseline gap-1 mb-8">
+                <span class="text-4xl font-extrabold text-slate-900 dark:text-white" id="price-starter">$2,490</span>
+                <span class="text-xs font-medium text-slate-500">/ month</span>
+              </div>
+
+              <!-- Features Checklist -->
+              <ul class="space-y-3.5 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>1 Dedicated Senior Engineer</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>Modern Next.js or React Web App</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>Tailwind CSS Custom Design System</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>PostgreSQL & Cloud Deployment</span>
+                </li>
+                <li class="flex items-center gap-3 text-slate-400 line-through">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                  <span>Dedicated Solutions Architect</span>
+                </li>
+              </ul>
+            </div>
+
+            <button onclick="openModal('contact-modal', 'Starter Plan')" class="w-full mt-8 py-3.5 rounded-xl text-sm font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 transition-colors">
+              Choose Starter
+            </button>
+          </div>
+
+          <!-- Pro Tier (Highlighted) -->
+          <div class="relative p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-500 dark:border-brand-500 shadow-2xl shadow-brand-500/15 flex flex-col justify-between transform lg:-translate-y-3">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-brand-600 to-accent-fuchsia text-white text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+              Most Popular Choice
+            </div>
+
+            <div>
+              <div class="text-xs font-mono uppercase font-bold text-brand-600 dark:text-brand-400 mb-2">Scaleups & Growth</div>
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Pro Engine</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Full squad velocity for rapid shipping and market expansion.</p>
+              
+              <div class="flex items-baseline gap-1 mb-8">
+                <span class="text-4xl font-extrabold text-slate-900 dark:text-white" id="price-pro">$5,990</span>
+                <span class="text-xs font-medium text-slate-500">/ month</span>
+              </div>
+
+              <ul class="space-y-3.5 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-brand-500"></i>
+                  <span class="font-semibold text-slate-900 dark:text-white">Full Squad (Lead, 2 Devs, UI Designer)</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-brand-500"></i>
+                  <span>Autonomous AI Orchestration Pipelines</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-brand-500"></i>
+                  <span>High-Fidelity Interactive Prototypes</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-brand-500"></i>
+                  <span>24/7 Slack Channel & Daily Syncs</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-brand-500"></i>
+                  <span>SOC-2 Ready Infrastructure & Auditing</span>
+                </li>
+              </ul>
+            </div>
+
+            <button onclick="openModal('contact-modal', 'Pro Engine Plan')" class="w-full mt-8 py-3.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-brand-600 via-indigo-600 to-accent-fuchsia hover:shadow-lg hover:shadow-brand-500/25 transition-all">
+              Accelerate with Pro
+            </button>
+          </div>
+
+          <!-- Enterprise Tier -->
+          <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+            <div>
+              <div class="text-xs font-mono uppercase font-bold text-slate-500 dark:text-slate-400 mb-2">High Volume & Regulated</div>
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Enterprise Custom</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Bespoke SLA, dedicated security engineers, and on-prem deployment.</p>
+              
+              <div class="flex items-baseline gap-1 mb-8">
+                <span class="text-4xl font-extrabold text-slate-900 dark:text-white" id="price-enterprise">$12,500</span>
+                <span class="text-xs font-medium text-slate-500">/ month</span>
+              </div>
+
+              <ul class="space-y-3.5 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>Dedicated Distributed Engineering Unit</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>99.99% Uptime Guarantee with SLA</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>Custom Model Training & Private Weights</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>Hardware Security Keys & Pen-testing</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                  <span>Dedicated Executive Director</span>
+                </li>
+              </ul>
+            </div>
+
+            <button onclick="openModal('contact-modal', 'Enterprise Plan')" class="w-full mt-8 py-3.5 rounded-xl text-sm font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 transition-colors">
+              Request Enterprise SLA
+            </button>
+          </div>
+
+        </div>
+
+        <div class="p-8 sm:p-10 rounded-3xl bg-gradient-to-tr from-brand-900/10 via-slate-900/5 dark:via-slate-900/60 to-accent-fuchsia/10 border border-slate-200 dark:border-slate-800 glass-card">
+          <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+              <span class="text-xs font-mono uppercase tracking-widest text-brand-600 dark:text-brand-400 font-bold">Interactive ROI Calculator</span>
+              <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">Estimate Your Annual Efficiency Gain</h3>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Drag the slider to adjust your current engineering and design team size.</p>
+            </div>
+
+            <!-- Slider Control -->
+            <div class="mb-10">
+              <div class="flex items-center justify-between text-sm font-bold mb-3">
+                <span class="text-slate-700 dark:text-slate-300">Active Team Members</span>
+                <span class="text-brand-600 dark:text-brand-400 text-xl font-extrabold font-mono" id="slider-team-label">18 Members</span>
+              </div>
+              <input type="range" id="roi-slider" min="2" max="100" value="18" step="1" class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-600" />
+              <div class="flex justify-between text-[11px] font-mono text-slate-400 mt-2">
+                <span>2 Startups</span>
+                <span>25 Mid-Scale</span>
+                <span>50 Growth</span>
+                <span>100+ Enterprise</span>
+              </div>
+            </div>
+
+            <!-- ROI Output Matrix -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+              <div class="p-5 rounded-2xl bg-white/70 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Dev Hours Saved / Wk</div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-brand-600 dark:text-brand-400 mt-1 font-mono" id="roi-hours">81 hrs</div>
+                <div class="text-[11px] text-slate-500 mt-1">Equivalent to 2.1 full-time hires</div>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-white/70 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Deployment Velocity Boost</div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-accent-fuchsia mt-1 font-mono" id="roi-velocity">4.8x</div>
+                <div class="text-[11px] text-slate-500 mt-1">Sprint delivery time cut by 68%</div>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-white/70 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Estimated Annual Savings</div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-emerald-500 mt-1 font-mono" id="roi-savings">$270,000</div>
+                <div class="text-[11px] text-slate-500 mt-1">Net positive ROI in &lt; 45 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="testimonials" class="py-24 bg-slate-100/60 dark:bg-slate-950/40 border-y border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-500/10 px-3.5 py-1 rounded-full border border-brand-500/20">Client Voices</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight">
+            Backed by Founders and Tech Executives
+          </h2>
+          <p class="text-base text-slate-600 dark:text-slate-400 mt-2">
+            Read how engineering leaders leverage Nova to shorten delivery horizons by months.
+          </p>
+        </div>
+
+        <!-- Interactive Carousel Container -->
+        <div class="max-w-4xl mx-auto relative">
+          
+          <div id="testimonial-card" class="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl relative min-h-[300px] flex flex-col justify-between transition-all duration-500">
+            
+            <!-- Quote Icon Background -->
+            <i class="fa-solid fa-quote-right absolute top-8 right-8 text-6xl text-slate-200/40 dark:text-slate-800/60 pointer-events-none"></i>
+
+            <div>
+              <!-- Star Rating -->
+              <div class="flex items-center gap-1 text-amber-400 mb-6 text-sm" id="testimonial-stars">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+
+              <!-- Testimonial Quote -->
+              <blockquote class="text-lg sm:text-xl font-medium text-slate-800 dark:text-slate-100 leading-relaxed italic" id="testimonial-quote">
+                "Nova Studio completely revamped our core analytics pipeline. What would have taken our internal squad 9 months of painful refactoring was shipped and battle-tested in just 8 weeks. We've scaled past 250,000 daily active users without a single incident."
+              </blockquote>
+            </div>
+
+            <!-- Author Bio -->
+            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/80">
+              <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-brand-500">
+                <img id="testimonial-avatar" src="https://placehold.co/100x100/4f46e5/ffffff?text=ES" alt="Elena Vance" class="w-full h-full object-cover" />
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white" id="testimonial-name">Elena Vance</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400" id="testimonial-role">Chief Technology Officer at HyperScale Media</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Carousel Controls -->
+          <div class="flex items-center justify-between mt-6 px-2">
+            <!-- Indicator Dots -->
+            <div class="flex items-center gap-2" id="testimonial-dots">
+              <button onclick="setTestimonial(0)" class="t-dot w-8 h-2.5 rounded-full bg-brand-600 transition-all"></button>
+              <button onclick="setTestimonial(1)" class="t-dot w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></button>
+              <button onclick="setTestimonial(2)" class="t-dot w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></button>
+            </div>
+
+            <!-- Next / Prev Buttons -->
+            <div class="flex items-center gap-3">
+              <button onclick="prevTestimonial()" aria-label="Previous Review" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center hover:border-brand-500 transition-all">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <button onclick="nextTestimonial()" aria-label="Next Review" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center hover:border-brand-500 transition-all">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="py-24 relative">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16">
+          <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-500/10 px-3.5 py-1 rounded-full border border-brand-500/20">Clarity</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-base text-slate-600 dark:text-slate-400 mt-2">
+            Everything you need to know about our sprints, IP ownership, and operational workflows.
+          </p>
+        </div>
+
+        <!-- Accordion Container -->
+        <div class="space-y-4">
+          
+          <!-- FAQ Item 1 -->
+          <div class="faq-item rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between font-bold text-slate-900 dark:text-white gap-4 focus:outline-none">
+              <span class="text-base sm:text-lg">Who owns the intellectual property and code repositories?</span>
+              <i class="fa-solid fa-plus faq-icon text-brand-500 text-sm transition-transform duration-300"></i>
+            </button>
+            <div class="faq-answer max-h-0 overflow-hidden px-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div class="pb-5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                You retain 100% full legal intellectual property ownership of all source code, Figma design files, architectural schematics, and AI models from day one. All deliverables are pushed directly to your organization's private GitHub or GitLab repos.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div class="faq-item rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between font-bold text-slate-900 dark:text-white gap-4 focus:outline-none">
+              <span class="text-base sm:text-lg">How quickly can our team kick off active development?</span>
+              <i class="fa-solid fa-plus faq-icon text-brand-500 text-sm transition-transform duration-300"></i>
+            </button>
+            <div class="faq-answer max-h-0 overflow-hidden px-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div class="pb-5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                Typically within 48 to 72 hours of agreement sign-off. We begin with a streamlined 90-minute architecture discovery call, spin up your dedicated Slack channel, configure staging environments, and push the initial sprint board.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div class="faq-item rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between font-bold text-slate-900 dark:text-white gap-4 focus:outline-none">
+              <span class="text-base sm:text-lg">Can you collaborate alongside our existing in-house engineers?</span>
+              <i class="fa-solid fa-plus faq-icon text-brand-500 text-sm transition-transform duration-300"></i>
+            </button>
+            <div class="faq-answer max-h-0 overflow-hidden px-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div class="pb-5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                Yes, absolutely. We frequently embed as high-velocity strike teams handling specialized workloads (e.g., building out new AI copilot layers, rewriting real-time engines, or designing full design system tokens) while adhering seamlessly to your CI/CD and review workflows.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div class="faq-item rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between font-bold text-slate-900 dark:text-white gap-4 focus:outline-none">
+              <span class="text-base sm:text-lg">What happens if we need to pause or change sprint capacity?</span>
+              <i class="fa-solid fa-plus faq-icon text-brand-500 text-sm transition-transform duration-300"></i>
+            </button>
+            <div class="faq-answer max-h-0 overflow-hidden px-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div class="pb-5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                You can pause or adjust your team capacity at any billing cycle with 14 days advance written notice. We prioritize agility and understand that market requirements and funding timelines fluctuate.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 5 -->
+          <div class="faq-item rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between font-bold text-slate-900 dark:text-white gap-4 focus:outline-none">
+              <span class="text-base sm:text-lg">What tech stacks and frameworks are you best at?</span>
+              <i class="fa-solid fa-plus faq-icon text-brand-500 text-sm transition-transform duration-300"></i>
+            </button>
+            <div class="faq-answer max-h-0 overflow-hidden px-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div class="pb-5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                Our primary battle-tested stack is TypeScript, Next.js / React, Node.js / Go / Rust, Tailwind CSS, PostgreSQL / ClickHouse, and modern AI toolchains including LangChain, Pinecone, and Hugging Face.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl bg-gradient-to-r from-brand-900 via-indigo-950 to-slate-950 border border-brand-500/30 p-10 sm:p-16 overflow-hidden text-center shadow-2xl">
+          
+          <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-accent-fuchsia/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -top-20 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10 max-w-2xl mx-auto">
+            <span class="px-4 py-1.5 rounded-full bg-brand-500/20 text-brand-300 text-xs font-mono font-bold uppercase tracking-wider border border-brand-500/30 inline-block mb-4">Ready to ship?</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+              Let's Build Your Flagship Product Together
+            </h2>
+            <p class="text-base sm:text-lg text-slate-300 mb-8 leading-relaxed">
+              Book a no-obligation strategy session with our engineering directors. Receive a detailed architecture audit within 48 hours.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button onclick="openModal('contact-modal')" class="px-8 py-4 rounded-xl text-base font-bold text-white bg-gradient-to-r from-brand-500 via-indigo-600 to-accent-fuchsia hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all">
+                Book 30-Min Strategy Call
+              </button>
+              <a href="#pricing" class="px-8 py-4 rounded-xl text-base font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-all">
+                Review Pricing Plans
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 pt-16 pb-12 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800">
+        
+        <!-- Company Bio & Status -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-fuchsia flex items-center justify-center text-white font-bold">
+              <i class="fa-solid fa-bolt text-sm"></i>
+            </div>
+            <span class="font-bold text-2xl text-slate-900 dark:text-white">Nova<span class="text-brand-500">.</span></span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 max-w-sm leading-relaxed">
+            Nova Studio is an elite digital engineering & product design firm helping high-growth startups and visionary tech leaders ship category-defining applications.
+          </p>
+
+          <!-- System Status Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span>All systems operational &bull; 99.98%</span>
+          </div>
+        </div>
+
+        <!-- Quick Links: Product -->
+        <div>
+          <h4 class="text-xs font-mono uppercase font-bold text-slate-900 dark:text-white tracking-wider mb-4">Platform</h4>
+          <ul class="space-y-2.5 text-sm text-slate-600 dark:text-slate-400">
+            <li><a href="#features" class="hover:text-brand-500 transition">Nova Engine 3.0</a></li>
+            <li><a href="#interactive-preview" class="hover:text-brand-500 transition">Live Telemetry</a></li>
+            <li><a href="#features" class="hover:text-brand-500 transition">AI Pipelines</a></li>
+            <li><a href="#features" class="hover:text-brand-500 transition">Multiplayer Sync</a></li>
+          </ul>
+        </div>
+
+        <!-- Quick Links: Agency -->
+        <div>
+          <h4 class="text-xs font-mono uppercase font-bold text-slate-900 dark:text-white tracking-wider mb-4">Company</h4>
+          <ul class="space-y-2.5 text-sm text-slate-600 dark:text-slate-400">
+            <li><a href="#portfolio" class="hover:text-brand-500 transition">Case Studies</a></li>
+            <li><a href="#pricing" class="hover:text-brand-500 transition">Pricing & ROI</a></li>
+            <li><a href="#testimonials" class="hover:text-brand-500 transition">Client Reviews</a></li>
+            <li><a href="#faq" class="hover:text-brand-500 transition">Security & Trust</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter Subscription Form -->
+        <div>
+          <h4 class="text-xs font-mono uppercase font-bold text-slate-900 dark:text-white tracking-wider mb-4">Engineering Dispatch</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">
+            Monthly insights on building hyper-scale web applications. No spam ever.
+          </p>
+          <form id="newsletter-form" onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
+            <input type="email" id="newsletter-email" required placeholder="Enter work email..." class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            <button type="submit" class="w-full py-2.5 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 transition-colors">
+              Subscribe Free
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <div>
+          &copy; <span id="copyright-year">2026</span> Nova Studio Inc. All rights reserved. Crafted for high performance.
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-brand-500 transition-colors" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter text-sm"></i></a>
+          <a href="#" class="hover:text-brand-500 transition-colors" aria-label="GitHub"><i class="fa-brands fa-github text-sm"></i></a>
+          <a href="#" class="hover:text-brand-500 transition-colors" aria-label="LinkedIn"><i class="fa-brands fa-linkedin text-sm"></i></a>
+          <a href="#" class="hover:text-brand-500 transition-colors" aria-label="Discord"><i class="fa-brands fa-discord text-sm"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Contact / Lead Generation Modal -->
+  <div id="contact-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+      
+      <!-- Close Button -->
+      <button onclick="closeModal('contact-modal')" class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="mb-6">
+        <span class="text-xs font-mono uppercase font-bold text-brand-600 dark:text-brand-400">Direct Inquiries</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">Book a Strategy Session</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Let's discuss your scope, tech stack, and timeline constraints.</p>
+      </div>
+
+      <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Your Name *</label>
+            <input type="text" id="contact-name" required placeholder="Sarah Connor" class="w-full px-3.5 py-2.5 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Work Email *</label>
+            <input type="email" id="contact-email" required placeholder="sarah@company.com" class="w-full px-3.5 py-2.5 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Project Category</label>
+            <select id="contact-type" class="w-full px-3.5 py-2.5 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+              <option value="SaaS Architecture">SaaS Architecture & Web App</option>
+              <option value="AI Integration">Autonomous AI / ML Workflow</option>
+              <option value="Mobile App">Cross-Platform Mobile App</option>
+              <option value="Design System">UI/UX & Design System</option>
+              <option value="Enterprise Custom">Enterprise Full Modernization</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Target Launch Horizon</label>
+            <select id="contact-timeline" class="w-full px-3.5 py-2.5 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+              <option value="Immediate (1-2 weeks)">Immediate (Next 2 Weeks)</option>
+              <option value="1-2 Months">1 - 2 Months</option>
+              <option value="Q3/Q4 Planning">Planning Next Quarter</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Project Scope & Core Objectives *</label>
+          <textarea id="contact-message" rows="3" required placeholder="Tell us about the user challenges, existing stack, and key metrics..." class="w-full px-3.5 py-2.5 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-brand-600 via-indigo-600 to-accent-fuchsia hover:shadow-lg hover:shadow-brand-500/25 transition-all">
+          Submit &amp; Schedule Architecture Call &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Case Study Preview Modal -->
+  <div id="project-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="closeModal('project-modal')" class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <span id="modal-project-badge" class="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-brand-500/10 text-brand-600 dark:text-brand-400 uppercase tracking-wider">Web Apps</span>
+      <h3 id="modal-project-title" class="text-2xl font-bold text-slate-900 dark:text-white mt-2 mb-4">Project Title</h3>
+      
+      <img id="modal-project-img" src="https://placehold.co/800x450/1e1b4b/818cf8?text=Project+Preview" alt="Project Preview" class="w-full h-56 object-cover rounded-2xl mb-6 border border-slate-200 dark:border-slate-800 shadow-md" />
+
+      <div class="space-y-4 text-sm text-slate-600 dark:text-slate-300">
+        <div>
+          <h4 class="font-bold text-slate-900 dark:text-white mb-1">Architecture &amp; Result Impact</h4>
+          <p id="modal-project-impact" class="leading-relaxed text-xs sm:text-sm">Impact description goes here.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-900 dark:text-white mb-1">Engineered With</h4>
+          <p id="modal-project-tech" class="font-mono text-xs text-brand-600 dark:text-brand-400 bg-slate-100 dark:bg-slate-800/80 p-2.5 rounded-xl">Tech stack</p>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+        <button onclick="closeModal('project-modal'); openModal('contact-modal')" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 transition-colors">
+          Build Similar Product &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Global Application State */
+    const state = {
+      theme: localStorage.getItem('nova_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+      billingCycle: 'monthly',
+      testimonialIndex: 0,
+    };
+
+    /* Theme Setup & Persistence */
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('nova_theme', theme);
+      state.theme = theme;
+    }
+    applyTheme(state.theme);
+
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+
+    function toggleTheme() {
+      const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      showToast(`Switched to ${nextTheme.toUpperCase()} mode`, 'info');
+    }
+
+    if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+    if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+
+    /* Mobile Drawer Management */
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const drawerPanel = document.getElementById('drawer-panel');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+
+    function openDrawer() {
+      mobileDrawer.classList.remove('hidden');
+      setTimeout(() => {
+        drawerPanel.classList.remove('translate-x-full');
+      }, 10);
+    }
+
+    function closeDrawer() {
+      drawerPanel.classList.add('translate-x-full');
+      setTimeout(() => {
+        mobileDrawer.classList.add('hidden');
+      }, 300);
+    }
+
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
+    if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if (mobileDrawer) {
+      mobileDrawer.addEventListener('click', (e) => {
+        if (e.target === mobileDrawer) closeDrawer();
+      });
+    }
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    const dashboardMetrics = {
+      mrr: {
+        title: 'Monthly Recurring Revenue',
+        value: '$184,240',
+        delta: '<i class="fa-solid fa-arrow-trend-up"></i> +28.4% this month',
+        legend: '● MRR Growth Trajectory',
+        line: 'M 0,80 Q 75,65 150,70 T 300,35 T 450,20 L 500,10',
+        area: 'M 0,100 L 0,80 Q 75,65 150,70 T 300,35 T 450,20 L 500,10 L 500,120 L 0,120 Z',
+        points: [{x:0,y:80},{x:150,y:70},{x:300,y:35},{x:500,y:10}],
+        color: '#6366f1'
+      },
+      users: {
+        title: 'Active Daily Users',
+        value: '94,820',
+        delta: '<i class="fa-solid fa-users"></i> +41.2% new accounts',
+        legend: '● Daily Active Sessions',
+        line: 'M 0,95 Q 75,80 150,55 T 300,45 T 450,15 L 500,8',
+        area: 'M 0,100 L 0,95 Q 75,80 150,55 T 300,45 T 450,15 L 500,8 L 500,120 L 0,120 Z',
+        points: [{x:0,y:95},{x:150,y:55},{x:300,y:45},{x:500,y:8}],
+        color: '#d946ef'
+      },
+      velocity: {
+        title: 'Engine Build Velocity',
+        value: '99.8 / 100',
+        delta: '<i class="fa-solid fa-gauge-high"></i> Top 0.1% Web Vitals',
+        legend: '● CI/CD Pipeline Throughput',
+        line: 'M 0,60 Q 75,40 150,30 T 300,25 T 450,18 L 500,5',
+        area: 'M 0,100 L 0,60 Q 75,40 150,30 T 300,25 T 450,18 L 500,5 L 500,120 L 0,120 Z',
+        points: [{x:0,y:60},{x:150,y:30},{x:300,y:25},{x:500,y:5}],
+        color: '#06b6d4'
+      }
+    };
+
+    function setDashboardMetric(metricKey) {
+      const data = dashboardMetrics[metricKey];
+      if (!data) return;
+
+      // Update tabs styling
+      document.querySelectorAll('.dash-tab').forEach(btn => {
+        btn.className = 'dash-tab px-3.5 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg transition-all';
+      });
+      const activeBtn = document.getElementById(`tab-${metricKey}`);
+      if (activeBtn) {
+        activeBtn.className = 'dash-tab px-3.5 py-1.5 text-xs font-bold rounded-lg bg-white dark:bg-slate-950 text-brand-600 dark:text-brand-400 shadow-sm transition-all';
+      }
+
+      // Update contents
+      document.getElementById('metric-title').textContent = data.title;
+      document.getElementById('metric-main-value').textContent = data.value;
+      document.getElementById('metric-delta').innerHTML = data.delta;
+      document.getElementById('chart-legend').textContent = data.legend;
+      document.getElementById('chart-legend').style.color = data.color;
+
+      // Smooth SVG paths update
+      const line = document.getElementById('chart-line');
+      const area = document.getElementById('chart-area');
+      line.setAttribute('d', data.line);
+      line.setAttribute('stroke', data.color);
+      area.setAttribute('d', data.area);
+
+      // Points update
+      data.points.forEach((pt, i) => {
+        const cp = document.getElementById(`cp-${i+1}`);
+        if (cp) {
+          cp.setAttribute('cx', pt.x);
+          cp.setAttribute('cy', pt.y);
+        }
+      });
+    }
+
+    function filterPortfolio(category) {
+      // Update active filter button
+      document.querySelectorAll('.portfolio-filter-btn').forEach(btn => {
+        btn.className = 'portfolio-filter-btn px-4 py-2 text-xs font-medium rounded-xl bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-brand-400 transition-all';
+      });
+      event.target.className = 'portfolio-filter-btn active-filter px-4 py-2 text-xs font-bold rounded-xl bg-brand-600 text-white shadow-sm transition-all';
+
+      // Filter cards
+      const items = document.querySelectorAll('.portfolio-item');
+      items.forEach(item => {
+        const itemCat = item.getAttribute('data-category');
+        if (category === 'all' || itemCat === category) {
+          item.style.display = 'flex';
+          setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 10);
+        } else {
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.95)';
+          setTimeout(() => { item.style.display = 'none'; }, 250);
+        }
+      });
+    }
+
+    function showProjectDetails(title, category, impact, tech, imgUrl) {
+      document.getElementById('modal-project-title').textContent = title;
+      document.getElementById('modal-project-badge').textContent = category;
+      document.getElementById('modal-project-impact').textContent = impact;
+      document.getElementById('modal-project-tech').textContent = tech;
+      document.getElementById('modal-project-img').src = imgUrl;
+      openModal('project-modal');
+    }
+
+    function previewFeature(title, details) {
+      showProjectDetails(title, 'Feature Deep-Dive', details, 'Nova Core Microkernel Architecture', 'https://placehold.co/800x450/1e1b4b/4f46e5?text=' + encodeURIComponent(title));
+    }
+
+    function setBillingCycle(cycle) {
+      state.billingCycle = cycle;
+      const isAnnual = cycle === 'annual';
+      
+      const btnMonthly = document.getElementById('billing-monthly');
+      const btnAnnual = document.getElementById('billing-annual');
+      
+      if (isAnnual) {
+        btnAnnual.className = 'px-5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-950 text-slate-900 dark:text-white shadow-sm transition-all flex items-center gap-1.5';
+        btnMonthly.className = 'px-5 py-2 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all';
+        
+        document.getElementById('price-starter').textContent = '$1,990';
+        document.getElementById('price-pro').textContent = '$4,790';
+        document.getElementById('price-enterprise').textContent = '$9,900';
+      } else {
+        btnMonthly.className = 'px-5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-950 text-slate-900 dark:text-white shadow-sm transition-all';
+        btnAnnual.className = 'px-5 py-2 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-1.5';
+        
+        document.getElementById('price-starter').textContent = '$2,490';
+        document.getElementById('price-pro').textContent = '$5,990';
+        document.getElementById('price-enterprise').textContent = '$12,500';
+      }
+    }
+
+    // ROI Range Slider calculation
+    const roiSlider = document.getElementById('roi-slider');
+    const sliderTeamLabel = document.getElementById('slider-team-label');
+    const roiHours = document.getElementById('roi-hours');
+    const roiVelocity = document.getElementById('roi-velocity');
+    const roiSavings = document.getElementById('roi-savings');
+
+    function updateROI() {
+      const teamSize = parseInt(roiSlider.value, 10);
+      sliderTeamLabel.textContent = `${teamSize} Members`;
+
+      const hours = Math.round(teamSize * 4.5);
+      roiHours.textContent = `${hours} hrs`;
+
+      // Velocity scale from 2.1x up to 7.5x
+      const velocity = (2.0 + (teamSize / 20)).toFixed(1);
+      roiVelocity.textContent = `${velocity}x`;
+
+      // Estimated annual financial gain based on dev cost savings
+      const savings = teamSize * 15000;
+      roiSavings.textContent = `$${savings.toLocaleString()}`;
+    }
+
+    if (roiSlider) {
+      roiSlider.addEventListener('input', updateROI);
+      updateROI();
+    }
+
+    const testimonials = [
+      {
+        quote: "Nova Studio completely revamped our core analytics pipeline. What would have taken our internal squad 9 months of painful refactoring was shipped and battle-tested in just 8 weeks. We've scaled past 250,000 daily active users without a single incident.",
+        name: "Elena Vance",
+        role: "Chief Technology Officer at HyperScale Media",
+        avatar: "https://placehold.co/100x100/4f46e5/ffffff?text=EV"
+      },
+      {
+        quote: "The visual polish and engineering rigor Nova delivers is unprecedented. Our investors and enterprise customers were thoroughly blown away by our AI Copilot speed. Conversion numbers skyrocketed by 310% within 30 days of launch.",
+        name: "Marcus Thorne",
+        role: "Founder & CEO, Synthetix AI",
+        avatar: "https://placehold.co/100x100/d946ef/ffffff?text=MT"
+      },
+      {
+        quote: "Finding an agency that truly understands modern WebSockets, distributed databases, and high-conversion UX under one roof is rare. Nova is hands down the best technical partner our company has ever collaborated with.",
+        name: "Devon Chen",
+        role: "VP of Product, FinPulse International",
+        avatar: "https://placehold.co/100x100/06b6d4/ffffff?text=DC"
+      }
+    ];
+
+    function setTestimonial(index) {
+      state.testimonialIndex = index;
+      const data = testimonials[index];
+      const card = document.getElementById('testimonial-card');
+      
+      card.style.opacity = '0.3';
+      card.style.transform = 'translateY(6px)';
+
+      setTimeout(() => {
+        document.getElementById('testimonial-quote').textContent = `"${data.quote}"`;
+        document.getElementById('testimonial-name').textContent = data.name;
+        document.getElementById('testimonial-role').textContent = data.role;
+        document.getElementById('testimonial-avatar').src = data.avatar;
+
+        // Update dots
+        document.querySelectorAll('.t-dot').forEach((dot, i) => {
+          if (i === index) {
+            dot.className = 't-dot w-8 h-2.5 rounded-full bg-brand-600 transition-all';
+          } else {
+            dot.className = 't-dot w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 transition-all';
+          }
+        });
+
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 200);
+    }
+
+    function nextTestimonial() {
+      let next = state.testimonialIndex + 1;
+      if (next >= testimonials.length) next = 0;
+      setTestimonial(next);
+    }
+
+    function prevTestimonial() {
+      let prev = state.testimonialIndex - 1;
+      if (prev < 0) prev = testimonials.length - 1;
+      setTestimonial(prev);
+    }
+
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const icon = btn.querySelector('.faq-icon');
+      const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+
+      // Close all other open FAQ items for cleaner experience
+      document.querySelectorAll('.faq-answer').forEach(el => {
+        el.style.maxHeight = null;
+      });
+      document.querySelectorAll('.faq-icon').forEach(ic => {
+        ic.style.transform = 'rotate(0deg)';
+        ic.classList.remove('fa-minus');
+        ic.classList.add('fa-plus');
+      });
+
+      if (!isOpen) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        icon.style.transform = 'rotate(45deg)';
+        icon.classList.remove('fa-plus');
+        icon.classList.add('fa-minus');
+      }
+    }
+
+    function openModal(modalId, defaultPlan = '') {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (defaultPlan && document.getElementById('contact-type')) {
+          const typeSelect = document.getElementById('contact-type');
+          typeSelect.value = defaultPlan.includes('Enterprise') ? 'Enterprise Custom' : 'SaaS Architecture';
+        }
+      }
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('contact-modal');
+        closeModal('project-modal');
+        closeDrawer();
+      }
+    });
+
+    // Toast Notification System (NO browser alerts)
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const icon = type === 'success' 
+        ? '<i class="fa-solid fa-circle-check text-emerald-500"></i>' 
+        : '<i class="fa-solid fa-circle-info text-brand-500"></i>';
+
+      toast.className = 'pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl text-xs font-semibold text-slate-800 dark:text-slate-100 transition-all duration-300 transform translate-y-3 opacity-0';
+      toast.innerHTML = `${icon}<span>${message}</span>`;
+      
+      container.appendChild(toast);
+
+      // Trigger entrance animation
+      setTimeout(() => {
+        toast.classList.remove('translate-y-3', 'opacity-0');
+      }, 10);
+
+      // Auto dismiss after 4 seconds
+      setTimeout(() => {
+        toast.classList.add('translate-y-3', 'opacity-0');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 4000);
+    }
+
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('contact-name').value;
+      closeModal('contact-modal');
+      event.target.reset();
+      showToast(`Thank you ${name}! Strategy call requested. We will reply within 2 hours.`, 'success');
+    }
+
+    function handleNewsletterSubmit(event) {
+      event.preventDefault();
+      const emailInput = document.getElementById('newsletter-email');
+      const email = emailInput.value;
+      emailInput.value = '';
+      showToast(`Subscribed ${email} to Engineering Dispatch!`, 'success');
+    }
+
+    function scrollToSection(sectionId) {
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Set dynamic current year in footer
+    const yearElem = document.getElementById('copyright-year');
+    if (yearElem) yearElem.textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
